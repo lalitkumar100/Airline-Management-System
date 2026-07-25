@@ -11,23 +11,23 @@ public class InputUtil {
 
     private static final Scanner sc = new Scanner(System.in);
 
-    public static int getInt(String message) {
+    public int getInt(String message) {
 
         while (true) {
+
             try {
+
                 System.out.print(message);
                 return Integer.parseInt(sc.nextLine());
 
             } catch (NumberFormatException e) {
-                throw new InvalidInputException(
-                        "Invalid Integer Input. Please enter a valid integer.");
-            } catch (InvalidInputException e) {
-                System.out.println(e.getMessage());
+
+                System.out.println("Invalid integer. Please try again.");
             }
         }
     }
 
-    public static double getDouble(String message) {
+    public  double getDouble(String message) {
 
         while (true) {
             try {
@@ -43,7 +43,7 @@ public class InputUtil {
         }
     }
 
-    public static String getString(String message) {
+    public  String getString(String message) {
 
         while (true) {
 
@@ -65,7 +65,7 @@ public class InputUtil {
         }
     }
 
-    public static LocalDate getDate(String message) {
+    public  LocalDate getDate(String message) {
 
         while (true) {
 
@@ -74,32 +74,14 @@ public class InputUtil {
                 return LocalDate.parse(sc.nextLine());
 
             } catch (DateTimeParseException e) {
-                throw new InvalidInputException(
-                        "Invalid Date Format. Use yyyy-MM-dd.");
-            } catch (InvalidInputException e) {
-                System.out.println(e.getMessage());
+                System.out.println("Invalid Date Format. Use yyyy-MM-dd.");
             }
         }
     }
 
-    public static LocalDateTime getDateTime(String message) {
 
-        while (true) {
 
-            try {
-                System.out.print(message + " (yyyy-MM-ddTHH:mm:ss): ");
-                return LocalDateTime.parse(sc.nextLine());
-
-            } catch (DateTimeParseException e) {
-                throw new InvalidInputException(
-                        "Invalid DateTime Format. Use yyyy-MM-ddTHH:mm:ss.");
-            } catch (InvalidInputException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    public static boolean getBoolean(String message) {
+    public  boolean getBoolean(String message) {
 
         while (true) {
 
@@ -122,6 +104,22 @@ public class InputUtil {
 
             } catch (InvalidInputException e) {
                 System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public LocalDateTime getDateTime(String message) {
+
+        while (true) {
+
+            try {
+
+                System.out.print(message + " (yyyy-MM-ddTHH:mm:ss): ");
+                return LocalDateTime.parse(sc.nextLine());
+
+            } catch (DateTimeParseException e) {
+
+                System.out.println("Invalid format. Example: 2026-07-25T15:30:00");
             }
         }
     }

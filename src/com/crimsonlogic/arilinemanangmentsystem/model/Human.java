@@ -1,10 +1,10 @@
-package com.crimsonlogic.arilinemanangmentsystem.entity;
+package com.crimsonlogic.arilinemanangmentsystem.model;
 
 import java.time.LocalDate;
 
-public abstract class Human {
+public  class Human implements  DisplayInfo {
 
-    private String id;
+
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
@@ -13,12 +13,24 @@ public abstract class Human {
     private String phoneNumber;
     private String email;
 
-    public Human(String id, String firstName, String lastName,
+
+    public Human(Human human) {
+
+        this.firstName = human.firstName;
+        this.lastName = human.lastName;
+        this.dateOfBirth = human.dateOfBirth;
+        this.passportNumber = human.passportNumber;
+        this.nationality = human.nationality;
+        this.phoneNumber = human.phoneNumber;
+        this.email = human.email;
+    }
+
+    public Human( String firstName, String lastName,
                  LocalDate dateOfBirth, String passportNumber,
                  String nationality, String phoneNumber,
                  String email) {
 
-        this.id = id;
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -29,9 +41,7 @@ public abstract class Human {
     }
 
     // Getters
-    public String getId() {
-        return id;
-    }
+
 
     public String getFirstName() {
         return firstName;
@@ -92,7 +102,6 @@ public abstract class Human {
 
     public void displayInfo() {
 
-        System.out.println("ID: " + id);
     System.out.println("Name: " + firstName + " " + lastName);
     System.out.println("DOB: " + dateOfBirth);
     System.out.println("Passport No: " + passportNumber);

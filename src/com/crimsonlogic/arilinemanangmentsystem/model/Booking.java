@@ -1,4 +1,4 @@
-package com.crimsonlogic.arilinemanangmentsystem.entity;
+package com.crimsonlogic.arilinemanangmentsystem.model;
 
 import java.time.LocalDateTime;
 

@@ -1,23 +1,29 @@
-package com.crimsonlogic.arilinemanangmentsystem.entity;
+package com.crimsonlogic.arilinemanangmentsystem.model;
+
+import com.crimsonlogic.arilinemanangmentsystem.utility.IdGenerator;
 
 import java.time.LocalDate;
 
-public class Crew extends Human {
+public class Crew extends Human    {
 
 
-    private int crewId;
+    private String crewId;
     private LocalDate dateOfJoining;
     private  int yearOfExperience;
-    public Crew(String id, String firstName, String lastName, LocalDate dateOfBirth, String passportNumber, String nationality, String phoneNumber, String email) {
-        super(id, firstName, lastName, dateOfBirth, passportNumber, nationality, phoneNumber, email);
+
+    public Crew(Human human,
+                LocalDate dateOfJoining,
+                int yearOfExperience) {
+
+        super(human);
+
+        this.crewId = IdGenerator.generateCrewId();
+        this.dateOfJoining = dateOfJoining;
+        this.yearOfExperience = yearOfExperience;
     }
 
-    public int getCrewId() {
+    public String getCrewId() {
         return crewId;
-    }
-
-    public void setCrewId(int crewId) {
-        this.crewId = crewId;
     }
 
     public LocalDate getDateOfJoining() {
@@ -41,8 +47,8 @@ public class Crew extends Human {
     public void displayInfo() {
 
         System.out.println("\n========== Crew Information ==========");
-        super.displayInfo(); // Displays Human details
         System.out.println("Crew ID           : " + crewId);
+        super.displayInfo(); // Displays Human details
         System.out.println("Date of Joining   : " + dateOfJoining);
         System.out.println("Years Experience  : " + yearOfExperience);
 

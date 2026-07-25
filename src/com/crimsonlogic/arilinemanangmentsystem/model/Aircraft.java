@@ -1,4 +1,4 @@
-package com.crimsonlogic.arilinemanangmentsystem.entity;
+package com.crimsonlogic.arilinemanangmentsystem.model;
 
 public class Aircraft {
 
@@ -12,6 +12,13 @@ public class Aircraft {
         this.aircraftName = aircraftName;
         this.aircraftModel = aircraftModel;
         this.capacity = capacity;
+    }
+
+    public Aircraft(Aircraft plane) {
+        this.aircraftId = plane.aircraftId;
+        this.aircraftName = plane.aircraftName;
+        this.aircraftModel = plane.aircraftModel;
+        this.capacity = plane.capacity;
     }
 
     public int getAircraftId() {
@@ -44,6 +51,16 @@ public class Aircraft {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+
+    @Override
+    public String toString() {
+        return String.format("%-10d %-20s %-20s %-10d",
+                aircraftId,
+                aircraftName,
+                aircraftModel,
+                capacity);
     }
 
     public void displayInfo() {

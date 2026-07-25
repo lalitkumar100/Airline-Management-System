@@ -1,33 +1,30 @@
-package com.crimsonlogic.arilinemanangmentsystem.entity;
+package com.crimsonlogic.arilinemanangmentsystem.model;
 
     public class Airport {
 
-        private int airportId;
-        private String airportCode;
+        private String airportId;
+        private String airportName;
         private String city;
         private String country;
 
-        public Airport(int airportId, String airportCode, String city, String country) {
+        public Airport(String airportId, String airportCode, String city, String country) {
             this.airportId = airportId;
-            this.airportCode = airportCode;
+            this.airportName = airportCode;
             this.city = city;
             this.country = country;
         }
 
-        public int getAirportId() {
+        public String getAirportId() {
             return airportId;
         }
 
-        public void setAirportId(int airportId) {
-            this.airportId = airportId;
-        }
 
         public String getAirportCode() {
-            return airportCode;
+            return airportName;
         }
 
         public void setAirportCode(String airportCode) {
-            this.airportCode = airportCode;
+            this.airportName = airportCode;
         }
 
         public String getCity() {
@@ -46,15 +43,26 @@ package com.crimsonlogic.arilinemanangmentsystem.entity;
             this.country = country;
         }
 
+
+
+        @Override
+        public String toString() {
+            return String.format("%-10s %-15s %-15s %-15s",
+                    airportId,
+                    airportName,
+                    city,
+                    country);
+        }
+
         public void displayInfo() {
             System.out.println("\n===== Airport Information =====");
             System.out.println("Airport ID   : " + airportId);
-            System.out.println("Airport Code : " + airportCode);
+            System.out.println("Airport Code : " + airportName);
             System.out.println("City         : " + city);
             System.out.println("Country      : " + country);
             System.out.println("===============================");
         }
     }
 
-}
+
 

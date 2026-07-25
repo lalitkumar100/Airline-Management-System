@@ -1,14 +1,15 @@
-package com.crimsonlogic.arilinemanangmentsystem.entity;
+package com.crimsonlogic.arilinemanangmentsystem.model;
+
+import com.crimsonlogic.arilinemanangmentsystem.utility.IdGenerator;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 
-public class Flight extends  Aircraft{
+public class Flight extends Aircraft {
 
 
-    private int flightId;
-    private String flightNumber;
+    private String flightId;
+
     private Airport sourceAirport;
     private Airport destinationAirport;
     private LocalDateTime departureDateTime;
@@ -16,33 +17,34 @@ public class Flight extends  Aircraft{
     private  FlightCrew  crewMember ;
 
 
-    public Flight(int aircraftId,
-                  String aircraftName,
-                  String aircraftModel,
-                  int capacity,
-                  int flightId,
-                  String flightNumber,
+    public Flight(
+                  Aircraft plane,
                   Airport sourceAirport,
                   Airport destinationAirport,
                   LocalDateTime departureDateTime,
                   LocalDateTime arrivalDateTime) {
 
-        super(aircraftId, aircraftName, aircraftModel, capacity);
 
-        this.flightId = flightId;
-        this.flightNumber = flightNumber;
+        super(plane);
+        this.flightId = IdGenerator.generateFlightId();
         this.sourceAirport = sourceAirport;
         this.destinationAirport = destinationAirport;
         this.departureDateTime = departureDateTime;
         this.arrivalDateTime = arrivalDateTime;
     }
 
-    public int getFlightId() {
+    public String getFlightId() {
         return flightId;
     }
 
-    public String getFlightNumber() {
-        return flightNumber;
+
+
+    public void setSourceAirport(Airport sourceAirport) {
+        this.sourceAirport = sourceAirport;
+    }
+
+    public void setDestinationAirport(Airport destinationAirport) {
+        this.destinationAirport = destinationAirport;
     }
 
     public Airport getSourceAirport() {
@@ -84,13 +86,32 @@ public class Flight extends  Aircraft{
 
         System.out.println("\n===== Flight Information =====");
         System.out.println("Flight ID          : " + flightId);
-        System.out.println("Flight Number      : " + flightNumber);
         System.out.println("Source Airport     : " + sourceAirport);
         System.out.println("Destination Airport: " + destinationAirport);
         System.out.println("Departure Time     : " + departureDateTime);
         System.out.println("Arrival Time       : " + arrivalDateTime);
         System.out.println("==============================");
     }
+
+
+    private static final DateTimeFormatter FORMATTER =
+            DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+
+    @Override
+    public String toString() {
+
+        return String.format(
+                "%-8s %-8d %-15s %-8s %-8s %-18s %-18s",
+                flightId,
+                getAircraftId(),
+                getAircraftName(),
+                sourceAirport.getAirportCode(),
+                destinationAirport.getAirportCode(),
+                departureDateTime.format(FORMATTER),
+                arrivalDateTime.format(FORMATTER)
+        );
+    }
+
     public void displayInfo(boolean showAircraft) {
 
         displayInfo(); // Flight Info
