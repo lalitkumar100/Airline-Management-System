@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.crimsonlogic.arilinemanangmentsystem.mapper.PaymentMapper">
+
+    <resultMap id="PaymentResultMap" type="com.crimsonlogic.arilinemanangmentsystem.model.Payment">
+        <id property="paymentId" column="payment_id"/>
+        <result property="amount" column="amount"/>
+        <result property="paid" column="is_paid"/>
+        <result property="paymentMethod" column="payment_method"/>
+    </resultMap>
+
+    <resultMap id="RefundResultMap" type="com.crimsonlogic.arilinemanangmentsystem.model.Refund">
+        <id property="refundId" column="refund_id"/>
+        <result property="amount" column="amount"/>
+        <result property="time" column="refund_date_time"/>
+        <!-- Booking association -->
+        <association property="booking" javaType="com.crimsonlogic.arilinemanangmentsystem.model.Booking">
+            <id property="bookingId" column="booking_id"/>
+            <result property="amount" column="booking_amount"/>
+        </association>
+    </resultMap>
+
+    <!-- Payment operations -->
+    <insert id="insertPayment" parameterType="com.crimsonlogic.arilinemanangmentsystem.model.Payment">
+        INSERT INTO payments (payment_id, amount, is_paid, payment_method)
+        VALUES (#{paymentId}, #{amount}, #{paid}, #{paymentMethod})
+    </insert>
+
+    <select id="selectPaymentById" resultMap="PaymentResultMap">
+        SELECT * FROM payments WHERE payment_id = #{paymentId}
+    </select>
+
+    <update id="updatePayment" parameterType="com.crimsonlogic.arilinemanangmentsystem.model.Payment">
+        UPDATE payments
+        SET is_paid = #{paid}, payment_method = #{paymentMethod}
+        WHERE payment_id = #{paymentId}
+    </update>
+
+    <!-- Refund operations -->
+    <insert id="insertRefund" parameterType="com.crimsonlogic.arilinemanangmentsystem.model.Refund">
+        INSERT INTO refunds (refund_id, booking_id, amount, account_number, bank_name)
+        VALUES (#{refundId}, #{booking.bookingId}, #{amount}, #{booking.passenger.accountNumber}, #{booking.passenger.bankName})
+    </insert>
+
+    <select id="selectRefundById" resultMap="RefundResultMap">
+        SELECT r.*, b.amount as booking_amount
+        FROM refunds r
+        JOIN bookings b ON r.booking_id = b.booking_id
+        WHERE r.refund_id = #{refundId}
+    </select>
+
+    <select id="selectAllRefunds" resultMap="RefundResultMap">
+        SELECT r.*, b.amount as booking_amount
+        FROM refunds r
+        JOIN bookings b ON r.booking_id = b.booking_id
+    </select>
+
+    <select id="selectMaxPaymentId" resultType="string">
+        SELECT MAX(payment_id) FROM payments
+    </select>
+
+</mapper>

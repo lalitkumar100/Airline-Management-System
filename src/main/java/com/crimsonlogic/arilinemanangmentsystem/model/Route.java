@@ -1,0 +1,97 @@
+package com.crimsonlogic.arilinemanangmentsystem.model;
+
+/**
+ * Represents a directional flight route between two airports.
+ * <p>
+ * Identified by source and destination airport IDs. Supports equality comparison
+ * so duplicate routes can be detected across the airline network.
+ */
+public class Route {
+
+    private final String sourceAirportId;
+    private final String destinationAirportId;
+
+    public Route(String sourceAirportId, String destinationAirportId) {
+        this.sourceAirportId = sourceAirportId;
+        this.destinationAirportId = destinationAirportId;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj)
+            return true;
+
+        if (!(obj instanceof Route))
+            return false;
+
+        Route other = (Route) obj;
+
+        return sourceAirportId.equals(other.sourceAirportId)
+                && destinationAirportId.equals(other.destinationAirportId);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(sourceAirportId, destinationAirportId);
+    }
+
+    /**
+     * Nested revenue summary for a single flight on a given route.
+     * <p>
+     * Calculates net revenue as total booking amount minus total refunds.
+     */
+    public static class RevenueReport {
+
+        private String flightId;
+        private double totalBookingAmount;
+        private double totalRefundAmount;
+        private double netRevenue;
+
+        public RevenueReport(String flightId,
+                             double totalBookingAmount,
+                             double totalRefundAmount) {
+
+            this.flightId = flightId;
+            this.totalBookingAmount = totalBookingAmount;
+            this.totalRefundAmount = totalRefundAmount;
+            this.netRevenue = totalBookingAmount - totalRefundAmount;
+        }
+
+        public String getFlightId() {
+            return flightId;
+        }
+
+        public double getTotalBookingAmount() {
+            return totalBookingAmount;
+        }
+
+        public double getTotalRefundAmount() {
+            return totalRefundAmount;
+        }
+
+        public double getNetRevenue() {
+            return netRevenue;
+        }
+
+        @Override
+        public String toString() {
+
+            return String.format(
+                    "%-10s %-15.2f %-15.2f %-15.2f",
+                    flightId,
+                    totalBookingAmount,
+                    totalRefundAmount,
+                    netRevenue);
+        }
+
+        public void displayInfo() {
+
+            System.out.println("\n========== REVENUE REPORT ==========");
+            System.out.println("Flight ID        : " + flightId);
+            System.out.println("Booking Revenue  : " + totalBookingAmount);
+            System.out.println("Refund Amount    : " + totalRefundAmount);
+            System.out.println("Net Revenue      : " + netRevenue);
+        }
+    }
+}

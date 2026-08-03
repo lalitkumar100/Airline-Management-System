@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.crimsonlogic.arilinemanangmentsystem.mapper.BookingMapper">
+
+    <resultMap id="BookingResultMap" type="com.crimsonlogic.arilinemanangmentsystem.model.Booking">
+        <id property="bookingId" column="booking_id"/>
+        <result property="seatType" column="seat_type"/>
+        <result property="seatno" column="seat_no"/>
+        <result property="amount" column="amount"/>
+        <result property="Bookingstatus" column="booking_status"/>
+        <result property="bookingDateTime" column="booking_date_time"/>
+        <result property="passengerCheckIn" column="passenger_check_in"/>
+
+        <!-- Association for Passenger -->
+        <association property="passenger" javaType="com.crimsonlogic.arilinemanangmentsystem.model.Passenger">
+            <id property="passengerId" column="passenger_id"/>
+            <result property="name" column="passenger_name"/>
+            <result property="email" column="passenger_email"/>
+            <result property="phone" column="passenger_phone"/>
+        </association>
+
+        <!-- Association for Flight -->
+        <association property="flightBooked" javaType="com.crimsonlogic.arilinemanangmentsystem.model.Flight">
+            <id property="flightId" column="flight_id"/>
+            <result property="baseFare" column="base_fare"/>
+            <result property="status" column="flight_status"/>
+        </association>
+
+        <!-- Association for Payment -->
+        <association property="payment" javaType="com.crimsonlogic.arilinemanangmentsystem.model.Payment">
+            <id property="paymentId" column="payment_id"/>
+            <result property="amount" column="payment_amount"/>
+            <result property="paid" column="is_paid"/>
+            <result property="paymentMethod" column="payment_method"/>
+        </association>
+
+        <!-- Association for Ticket -->
+        <association property="ticket" javaType="com.crimsonlogic.arilinemanangmentsystem.model.Ticket">
+            <id property="ticketId" column="ticket_id"/>
+            <result property="fare" column="ticket_fare"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="TicketResultMap" type="com.crimsonlogic.arilinemanangmentsystem.model.Ticket">
+        <id property="ticketId" column="ticket_id"/>
+        <result property="fare" column="fare"/>
+        <!-- Seat association -->
+        <association property="seat" javaType="com.crimsonlogic.arilinemanangmentsystem.model.Seat">
+            <result property="seatNo" column="seat_no"/>
+        </association>
+    </resultMap>
+
+    <insert id="insertBooking" parameterType="com.crimsonlogic.arilinemanangmentsystem.model.Booking">
+        INSERT INTO bookings (
+            booking_id, passenger_id, flight_id, seat_type, seat_no, amount, 
+            booking_status, booking_date_time, passenger_check_in, payment_id
+        ) VALUES (
+            #{bookingId}, #{passenger.passengerId}, #{flightBooked.flightId}, #{seatType}, #{seatno}, #{amount}, 
+            #{Bookingstatus}, #{bookingDateTime}, #{passengerCheckIn}, #{payment.paymentId}
+        )
+    </insert>
+
+    <select id="selectBookingById" resultMap="BookingResultMap">
+        SELECT 
+            b.*, 
+            p.name as passenger_name, p.email as passenger_email, p.phone as passenger_phone,
+            f.base_fare, f.status as flight_status,
+            pay.amount as payment_amount, pay.is_paid, pay.payment_method,
+            t.ticket_id, t.fare as ticket_fare
+        FROM bookings b
+        JOIN passengers p ON b.passenger_id = p.passenger_id
+        JOIN flights f ON b.flight_id = f.flight_id
+        LEFT JOIN payments pay ON b.payment_id = pay.payment_id
+        LEFT JOIN tickets t ON b.booking_id = t.booking_id
+        WHERE b.booking_id = #{bookingId}
+    </select>
+
+    <select id="selectAllBookings" resultMap="BookingResultMap">
+        SELECT 
+            b.*, 
+            p.name as passenger_name, p.email as passenger_email, p.phone as passenger_phone,
+            f.base_fare, f.status as flight_status,
+            pay.amount as payment_amount, pay.is_paid, pay.payment_method,
+            t.ticket_id, t.fare as ticket_fare
+        FROM bookings b
+        JOIN passengers p ON b.passenger_id = p.passenger_id
+        JOIN flights f ON b.flight_id = f.flight_id
+        LEFT JOIN payments pay ON b.payment_id = pay.payment_id
+        LEFT JOIN tickets t ON b.booking_id = t.booking_id
+    </select>
+
+    <select id="selectBookingsByFlightId" resultMap="BookingResultMap">
+        SELECT 
+            b.*, 
+            p.name as passenger_name, p.email as passenger_email, p.phone as passenger_phone,
+            f.base_fare, f.status as flight_status,
+            pay.amount as payment_amount, pay.is_paid, pay.payment_method,
+            t.ticket_id, t.fare as ticket_fare
+        FROM bookings b
+        JOIN passengers p ON b.passenger_id = p.passenger_id
+        JOIN flights f ON b.flight_id = f.flight_id
+        LEFT JOIN payments pay ON b.payment_id = pay.payment_id
+        LEFT JOIN tickets t ON b.booking_id = t.booking_id
+        WHERE b.flight_id = #{flightId}
+    </select>
+
+    <select id="selectBookingsByPassengerId" resultMap="BookingResultMap">
+        SELECT 
+            b.*, 
+            p.name as passenger_name, p.email as passenger_email, p.phone as passenger_phone,
+            f.base_fare, f.status as flight_status,
+            pay.amount as payment_amount, pay.is_paid, pay.payment_method,
+            t.ticket_id, t.fare as ticket_fare
+        FROM bookings b
+        JOIN passengers p ON b.passenger_id = p.passenger_id
+        JOIN flights f ON b.flight_id = f.flight_id
+        LEFT JOIN payments pay ON b.payment_id = pay.payment_id
+        LEFT JOIN tickets t ON b.booking_id = t.booking_id
+        WHERE b.passenger_id = #{passengerId}
+    </select>
+
+    <update id="updateBooking" parameterType="com.crimsonlogic.arilinemanangmentsystem.model.Booking">
+        UPDATE bookings
+        SET 
+            booking_status = #{Bookingstatus},
+            seat_no = #{seatno},
+            passenger_check_in = #{passengerCheckIn},
+            payment_id = #{payment.paymentId}
+        WHERE booking_id = #{bookingId}
+    </update>
+
+    <delete id="deleteBooking">
+        DELETE FROM bookings WHERE booking_id = #{bookingId}
+    </delete>
+
+    <!-- Ticket Operations -->
+    <insert id="insertTicket" parameterType="com.crimsonlogic.arilinemanangmentsystem.model.Ticket">
+        INSERT INTO tickets (ticket_id, booking_id, flight_id, seat_id, fare)
+        VALUES (#{ticketId}, #{bookingId}, #{flightId}, #{seat.seatNo}, #{fare})
+    </insert>
+
+    <select id="selectTicketById" resultMap="TicketResultMap">
+        SELECT * FROM tickets WHERE ticket_id = #{ticketId}
+    </select>
+
+    <delete id="deleteTicket">
+        DELETE FROM tickets WHERE ticket_id = #{ticketId}
+    </delete>
+
+    <select id="selectMaxBookingId" resultType="string">
+        SELECT MAX(booking_id) FROM bookings
+    </select>
+
+    <select id="selectMaxTicketId" resultType="string">
+        SELECT MAX(ticket_id) FROM tickets
+    </select>
+
+</mapper>

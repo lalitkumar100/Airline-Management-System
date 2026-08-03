@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crimsonlogic.arilinemanangmentsystem.mapper.SeatMapper">
+
+    <insert id="insertSeat" useGeneratedKeys="true" keyProperty="seat.seatId" keyColumn="seat_id">
+        INSERT INTO seats (flight_id, seat_no, seat_type, is_available, is_upgraded)
+        VALUES (#{flightId}, #{seat.seatNo}, #{seat.SeatType}, #{seat.available}, #{seat.upgraded})
+    </insert>
+
+    <select id="selectSeatById" resultType="com.crimsonlogic.arilinemanangmentsystem.model.Seat">
+        SELECT seat_id AS seatId, seat_no AS seatNo, seat_type AS SeatType, is_available AS available, is_upgraded AS upgraded
+        FROM seats 
+        WHERE seat_id = #{seatId}
+    </select>
+
+    <select id="selectSeatsByFlightId" resultType="com.crimsonlogic.arilinemanangmentsystem.model.Seat">
+        SELECT seat_id AS seatId, seat_no AS seatNo, seat_type AS SeatType, is_available AS available, is_upgraded AS upgraded
+        FROM seats 
+        WHERE flight_id = #{flightId}
+    </select>
+
+</mapper>

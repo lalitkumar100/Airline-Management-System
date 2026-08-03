@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.crimsonlogic.arilinemanangmentsystem.mapper.AirportMapper">
+
+    <resultMap id="AirportResultMap" type="com.crimsonlogic.arilinemanangmentsystem.model.Airport">
+        <id property="airportCode" column="airport_code"/>
+        <result property="airportName" column="airport_name"/>
+        <result property="city" column="city"/>
+    </resultMap>
+
+    <insert id="insertAirport" parameterType="com.crimsonlogic.arilinemanangmentsystem.model.Airport">
+        INSERT INTO airports (airport_code, airport_name, city)
+        VALUES (#{airportCode}, #{airportName}, #{city})
+    </insert>
+
+    <select id="selectAirportByCode" resultMap="AirportResultMap">
+        SELECT * FROM airports WHERE airport_code = #{airportCode}
+    </select>
+
+    <select id="selectAllAirports" resultMap="AirportResultMap">
+        SELECT * FROM airports
+    </select>
+
+    <update id="updateAirport" parameterType="com.crimsonlogic.arilinemanangmentsystem.model.Airport">
+        UPDATE airports
+        SET airport_name = #{airportName}, city = #{city}
+        WHERE airport_code = #{airportCode}
+    </update>
+
+    <delete id="deleteAirport">
+        DELETE FROM airports WHERE airport_code = #{airportCode}
+    </delete>
+
+</mapper>

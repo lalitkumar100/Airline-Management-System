@@ -1,0 +1,198 @@
+        // Airports
+        airportList.add(new Airport("DEL", "Indira Gandhi International Airport", "Delhi"));
+        airportList.add(new Airport("BOM", "Chhatrapati Shivaji Maharaj Airport", "Mumbai"));
+        airportList.add(new Airport("BLR", "Kempegowda International Airport", "Bengaluru"));
+        airportList.add(new Airport("MAA", "Chennai International Airport", "Chennai"));
+        airportList.add(new Airport("HYD", "Rajiv Gandhi International Airport", "Hyderabad"));
+
+        // Aircraft
+        aircraftList.add(new Aircraft("AC001", "Airbus A320", 5));
+        aircraftList.add(new Aircraft("AC002", "Boeing 737", 189));
+        aircraftList.add(new Aircraft("AC003", "Airbus A321", 220));
+        aircraftList.add(new Aircraft("AC004", "Boeing 787 Dreamliner", 290));
+        aircraftList.add(new Aircraft("AC005", "Airbus A350", 315));
+
+
+        
+            Flight fl001 = flightService.findFlightById("FL001");
+            Flight fl002 = flightService.findFlightById("FL002");
+            Flight fl003 = flightService.findFlightById("FL003");
+            Flight fl004 = flightService.findFlightById("FL004");
+            Flight fl005 = flightService.findFlightById("FL005");
+            Flight fl006 = flightService.findFlightById("FL006");
+            Flight fl007 = flightService.findFlightById("FL007");
+            Flight fl008 = flightService.findFlightById("FL008");
+            Flight fl009 = flightService.findFlightById("FL009");
+            Flight fl010 = flightService.findFlightById("FL010");
+
+            Passenger p1 = passengerService.getPassengerById("PAS1001");
+            Passenger p2 = passengerService.getPassengerById("PAS1002");
+            Passenger p3 = passengerService.getPassengerById("PAS1003");
+            Passenger p4 = passengerService.getPassengerById("PAS1004");
+            Passenger p5 = passengerService.getPassengerById("PAS1005");
+            Passenger p6 = passengerService.getPassengerById("PAS1006");
+            Passenger p7 = passengerService.getPassengerById("PAS1007");
+            Passenger p8 = passengerService.getPassengerById("PAS1008");
+            Passenger p9 = passengerService.getPassengerById("PAS1009");
+            Passenger p10 = passengerService.getPassengerById("PAS1010");
+
+            addDemoBooking(fl001, p1, "A");
+            addDemoBooking(fl001, p2, "B");
+            addDemoBooking(fl001, p3, "C");
+
+            addDemoBooking(fl002, p4, "A");
+            addDemoBooking(fl002, p5, "B");
+            addDemoBooking(fl002, p6, "C");
+
+            addDemoBooking(fl003, p7, "A");
+            addDemoBooking(fl003, p8, "B");
+            addDemoBooking(fl003, p9, "C");
+
+            addDemoBooking(fl004, p10, "A");
+            addDemoBooking(fl004, p1, "B");
+            addDemoBooking(fl004, p2, "C");
+
+            addDemoBooking(fl005, p3, "A");
+            addDemoBooking(fl005, p4, "B");
+            addDemoBooking(fl005, p5, "C");
+
+            addDemoBooking(fl006, p6, "A");
+            addDemoBooking(fl006, p7, "B");
+            addDemoBooking(fl006, p8, "C");
+
+            addDemoBooking(fl007, p9, "A");
+            addDemoBooking(fl007, p10, "B");
+            addDemoBooking(fl007, p1, "C");
+
+            addDemoBooking(fl008, p2, "A");
+            addDemoBooking(fl008, p3, "B");
+            addDemoBooking(fl008, p4, "C");
+
+            addDemoBooking(fl009, p5, "A");
+            addDemoBooking(fl009, p6, "B");
+            addDemoBooking(fl009, p7, "C");
+
+            addDemoBooking(fl010, p8, "A");
+            addDemoBooking(fl010, p9, "B");
+            addDemoBooking(fl010, p10, "C");
+
+
+Passenger passenger1 = new Passenger(
+        IdGenerator.generatePassengerId(),
+        "Rahul Sharma",
+        "rahul@gmail.com",
+        "9876543210",
+        LocalDate.of(1998, 5, 14),
+        "State Bank of India",
+        "SBI1234567890",
+        new LoyaltyAccount(150, LoyaltyAccount.SILVER_TIER),
+        "rahul123"
+);
+
+Passenger passenger2 = new Passenger(
+        IdGenerator.generatePassengerId(),
+        "Priya Patel",
+        "priya@gmail.com",
+        "9876543211",
+        LocalDate.of(1996, 9, 22),
+        "HDFC Bank",
+        "HDFC9876543210",
+        new LoyaltyAccount(420, LoyaltyAccount.GOLD_TIER),
+        "priya123"
+);
+
+Passenger passenger3 = new Passenger(
+        IdGenerator.generatePassengerId(),
+        "Amit Kumar",
+        "amit@gmail.com",
+        "9876543212",
+        LocalDate.of(1999, 2, 10),
+        "ICICI Bank",
+        "ICICI4567891230",
+        new LoyaltyAccount(80, LoyaltyAccount.SILVER_TIER),
+        "amit123"
+);
+
+Passenger passenger4 = new Passenger(
+        IdGenerator.generatePassengerId(),
+        "Sneha Reddy",
+        "sneha@gmail.com",
+        "9876543213",
+        LocalDate.of(1995, 11, 5),
+        "Axis Bank",
+        "AXIS1239874560",
+        new LoyaltyAccount(900, LoyaltyAccount.DIAMOND_TIER),
+        "sneha123"
+);
+
+Passenger passenger5 = new Passenger(
+        IdGenerator.generatePassengerId(),
+        "Arjun Singh",
+        "arjun@gmail.com",
+        "9876543214",
+        LocalDate.of(2000, 7, 18),
+        "Punjab National Bank",
+        "PNB7894561230",
+        new LoyaltyAccount(),
+        "arjun123"
+);
+
+Passenger passenger6 = new Passenger(
+        IdGenerator.generatePassengerId(),
+        "Neha Verma",
+        "neha@gmail.com",
+        "9876543215",
+        LocalDate.of(1998, 12, 1),
+        "Bank of Baroda",
+        "BOB6543217890",
+        new LoyaltyAccount(250, LoyaltyAccount.SILVER_TIER),
+        "neha123"
+);
+
+Passenger passenger7 = new Passenger(
+        IdGenerator.generatePassengerId(),
+        "Rohan Mehta",
+        "rohan@gmail.com",
+        "9876543216",
+        LocalDate.of(1997, 4, 25),
+        "Canara Bank",
+        "CAN1112223334",
+        new LoyaltyAccount(650, LoyaltyAccount.GOLD_TIER),
+        "rohan123"
+);
+
+Passenger passenger8 = new Passenger(
+        IdGenerator.generatePassengerId(),
+        "Kavya Nair",
+        "kavya@gmail.com",
+        "9876543217",
+        LocalDate.of(1994, 8, 30),
+        "Kotak Mahindra Bank",
+        "KOT9871236540",
+        new LoyaltyAccount(1200, LoyaltyAccount.DIAMOND_TIER),
+        "kavya123"
+);
+
+Passenger passenger9 = new Passenger(
+        IdGenerator.generatePassengerId(),
+        "Vikram Joshi",
+        "vikram@gmail.com",
+        "9876543218",
+        LocalDate.of(1999, 1, 15),
+        "Union Bank of India",
+        "UBI1122334455",
+        new LoyaltyAccount(),
+        "vikram123"
+);
+
+Passenger passenger10 = new Passenger(
+        IdGenerator.generatePassengerId(),
+        "Ananya Das",
+        "ananya@gmail.com",
+        "9876543219",
+        LocalDate.of(1998, 6, 9),
+        "Indian Bank",
+        "IND9988776655",
+        new LoyaltyAccount(350, LoyaltyAccount.SILVER_TIER),
+        "ananya123"
+);

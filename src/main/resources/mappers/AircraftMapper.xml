@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.crimsonlogic.arilinemanangmentsystem.mapper.AircraftMapper">
+
+    <resultMap id="AircraftResultMap" type="com.crimsonlogic.arilinemanangmentsystem.model.Aircraft">
+        <id property="aircraftId" column="aircraft_id"/>
+        <result property="model" column="model"/>
+        <result property="capacity" column="capacity"/>
+    </resultMap>
+
+    <insert id="insertAircraft" parameterType="com.crimsonlogic.arilinemanangmentsystem.model.Aircraft">
+        INSERT INTO aircrafts (aircraft_id, model, capacity)
+        VALUES (#{aircraftId}, #{model}, #{capacity})
+    </insert>
+
+    <select id="selectAircraftById" resultMap="AircraftResultMap">
+        SELECT * FROM aircrafts WHERE aircraft_id = #{aircraftId}
+    </select>
+
+    <select id="selectAllAircrafts" resultMap="AircraftResultMap">
+        SELECT * FROM aircrafts
+    </select>
+
+    <update id="updateAircraft" parameterType="com.crimsonlogic.arilinemanangmentsystem.model.Aircraft">
+        UPDATE aircrafts
+        SET model = #{model}, capacity = #{capacity}
+        WHERE aircraft_id = #{aircraftId}
+    </update>
+
+    <delete id="deleteAircraft">
+        DELETE FROM aircrafts WHERE aircraft_id = #{aircraftId}
+    </delete>
+
+</mapper>

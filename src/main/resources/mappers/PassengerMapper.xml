@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.crimsonlogic.arilinemanangmentsystem.mapper.PassengerMapper">
+
+    <resultMap id="LoyaltyAccountResultMap" type="com.crimsonlogic.arilinemanangmentsystem.model.LoyaltyAccount">
+        <result property="points" column="points"/>
+        <result property="tier" column="tier"/>
+    </resultMap>
+
+    <resultMap id="PassengerResultMap" type="com.crimsonlogic.arilinemanangmentsystem.model.Passenger">
+        <id property="passengerId" column="passenger_id"/>
+        <result property="name" column="name"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <result property="dateOfBirth" column="date_of_birth"/>
+        <result property="bankName" column="bank_name"/>
+        <result property="accountNumber" column="account_number"/>
+        <result property="password" column="password"/>
+        
+        <association property="loyalty" javaType="com.crimsonlogic.arilinemanangmentsystem.model.LoyaltyAccount">
+            <result property="points" column="points"/>
+            <result property="tier" column="tier"/>
+        </association>
+    </resultMap>
+
+    <insert id="insertLoyaltyAccount" parameterType="com.crimsonlogic.arilinemanangmentsystem.model.LoyaltyAccount" useGeneratedKeys="true" keyProperty="points" keyColumn="loyalty_id">
+        INSERT INTO loyalty_accounts (points, tier)
+        VALUES (#{points}, #{tier})
+    </insert>
+
+    <update id="updateLoyaltyAccount" parameterType="com.crimsonlogic.arilinemanangmentsystem.model.LoyaltyAccount">
+        UPDATE loyalty_accounts
+        SET points = #{points}, tier = #{tier}
+        WHERE loyalty_id = (SELECT loyalty_id FROM passengers WHERE passenger_id = #{passengerId})
+    </update>
+
+    <select id="selectLoyaltyAccountById" resultMap="LoyaltyAccountResultMap">
+        SELECT points, tier FROM loyalty_accounts WHERE loyalty_id = #{loyaltyId}
+    </select>
+
+    <insert id="insertPassenger" parameterType="com.crimsonlogic.arilinemanangmentsystem.model.Passenger">
+        INSERT INTO passengers (
+            passenger_id, name, email, phone, date_of_birth, bank_name, account_number, password, loyalty_id
+        ) VALUES (
+            #{passengerId}, #{name}, #{email}, #{phone}, #{dateOfBirth}, #{bankName}, #{accountNumber}, #{password}, 
+            (SELECT MAX(loyalty_id) FROM loyalty_accounts)
+        )
+    </insert>
+
+    <select id="selectPassengerById" resultMap="PassengerResultMap">
+        SELECT p.*, l.points, l.tier
+        FROM passengers p
+        LEFT JOIN loyalty_accounts l ON p.loyalty_id = l.loyalty_id
+        WHERE p.passenger_id = #{passengerId}
+    </select>
+
+    <select id="selectPassengerByEmail" resultMap="PassengerResultMap">
+        SELECT p.*, l.points, l.tier
+        FROM passengers p
+        LEFT JOIN loyalty_accounts l ON p.loyalty_id = l.loyalty_id
+        WHERE p.email = #{email}
+    </select>
+
+    <select id="selectAllPassengers" resultMap="PassengerResultMap">
+        SELECT p.*, l.points, l.tier
+        FROM passengers p
+        LEFT JOIN loyalty_accounts l ON p.loyalty_id = l.loyalty_id
+    </select>
+
+    <update id="updatePassenger" parameterType="com.crimsonlogic.arilinemanangmentsystem.model.Passenger">
+        UPDATE passengers
+        SET 
+            name = #{name}, 
+            email = #{email}, 
+            phone = #{phone}, 
+            date_of_birth = #{dateOfBirth},
+            bank_name = #{bankName},
+            account_number = #{accountNumber},
+            password = #{password}
+        WHERE passenger_id = #{passengerId}
+    </update>
+
+    <delete id="deletePassenger">
+        DELETE FROM passengers WHERE passenger_id = #{passengerId}
+    </delete>
+
+    <select id="selectMaxPassengerId" resultType="string">
+        SELECT MAX(passenger_id) FROM passengers
+    </select>
+
+</mapper>

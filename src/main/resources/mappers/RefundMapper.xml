@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crimsonlogic.arilinemanangmentsystem.mapper.RefundMapper">
+
+    <insert id="insertRefund">
+        INSERT INTO refunds (refund_id, booking_id, amount, account_number, bank_name)
+        VALUES (#{refundId}, #{booking.bookingId}, #{amount}, #{accountNo}, #{bankName})
+    </insert>
+
+    <select id="selectRefundById" resultType="com.crimsonlogic.arilinemanangmentsystem.model.Refund">
+        SELECT refund_id AS refundId, booking_id AS "booking.bookingId", amount, account_number AS accountNo, bank_name AS bankName
+        FROM refunds 
+        WHERE refund_id = #{refundId}
+    </select>
+
+    <select id="selectAllRefunds" resultType="com.crimsonlogic.arilinemanangmentsystem.model.Refund">
+        SELECT refund_id AS refundId, booking_id AS "booking.bookingId", amount, account_number AS accountNo, bank_name AS bankName
+        FROM refunds
+    </select>
+    
+    <select id="selectRefundsByFlightId" resultType="com.crimsonlogic.arilinemanangmentsystem.model.Refund">
+        SELECT r.refund_id AS refundId, r.amount, r.account_number AS accountNo, r.bank_name AS bankName
+        FROM refunds r
+        JOIN bookings b ON r.booking_id = b.booking_id
+        WHERE b.flight_id = #{flightId}
+    </select>
+
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.crimsonlogic.arilinemanangmentsystem.mapper.FlightMapper">
+
+    <resultMap id="FlightResultMap" type="com.crimsonlogic.arilinemanangmentsystem.model.Flight">
+        <id property="flightId" column="flight_id"/>
+        <result property="departureDateTime" column="departure_date_time"/>
+        <result property="arrivalDateTime" column="arrival_date_time"/>
+        <result property="baseFare" column="base_fare"/>
+        <result property="status" column="status"/>
+        <result property="bookedASeats" column="booked_a_seats"/>
+        <result property="bookedBSeats" column="booked_b_seats"/>
+        <result property="bookedCSeats" column="booked_c_seats"/>
+
+        <!-- Association for Source Airport -->
+        <association property="source" javaType="com.crimsonlogic.arilinemanangmentsystem.model.Airport">
+            <id property="airportCode" column="source_code"/>
+            <result property="airportName" column="source_name"/>
+            <result property="city" column="source_city"/>
+        </association>
+
+        <!-- Association for Destination Airport -->
+        <association property="destination" javaType="com.crimsonlogic.arilinemanangmentsystem.model.Airport">
+            <id property="airportCode" column="dest_code"/>
+            <result property="airportName" column="dest_name"/>
+            <result property="city" column="dest_city"/>
+        </association>
+
+        <!-- Association for Aircraft -->
+        <association property="aircraft" javaType="com.crimsonlogic.arilinemanangmentsystem.model.Aircraft">
+            <id property="aircraftId" column="aircraft_id"/>
+            <result property="model" column="aircraft_model"/>
+            <result property="capacity" column="aircraft_capacity"/>
+        </association>
+    </resultMap>
+
+    <insert id="insertFlight" parameterType="com.crimsonlogic.arilinemanangmentsystem.model.Flight">
+        INSERT INTO flights (
+            flight_id, source_airport_code, destination_airport_code, 
+            departure_date_time, arrival_date_time, aircraft_id, base_fare, status,
+            booked_a_seats, booked_b_seats, booked_c_seats
+        ) VALUES (
+            #{flightId}, #{source.airportCode}, #{destination.airportCode}, 
+            #{departureDateTime}, #{arrivalDateTime}, #{aircraft.aircraftId}, #{baseFare}, #{status},
+            #{bookedASeats}, #{bookedBSeats}, #{bookedCSeats}
+        )
+    </insert>
+
+    <select id="selectFlightById" resultMap="FlightResultMap">
+        SELECT 
+            f.flight_id, f.departure_date_time, f.arrival_date_time, f.base_fare, f.status,
+            f.booked_a_seats, f.booked_b_seats, f.booked_c_seats,
+            src.airport_code as source_code, src.airport_name as source_name, src.city as source_city,
+            dest.airport_code as dest_code, dest.airport_name as dest_name, dest.city as dest_city,
+            ac.aircraft_id, ac.model as aircraft_model, ac.capacity as aircraft_capacity
+        FROM flights f
+        JOIN airports src ON f.source_airport_code = src.airport_code
+        JOIN airports dest ON f.destination_airport_code = dest.airport_code
+        JOIN aircrafts ac ON f.aircraft_id = ac.aircraft_id
+        WHERE f.flight_id = #{flightId}
+    </select>
+
+    <select id="selectAllFlights" resultMap="FlightResultMap">
+        SELECT 
+            f.flight_id, f.departure_date_time, f.arrival_date_time, f.base_fare, f.status,
+            f.booked_a_seats, f.booked_b_seats, f.booked_c_seats,
+            src.airport_code as source_code, src.airport_name as source_name, src.city as source_city,
+            dest.airport_code as dest_code, dest.airport_name as dest_name, dest.city as dest_city,
+            ac.aircraft_id, ac.model as aircraft_model, ac.capacity as aircraft_capacity
+        FROM flights f
+        JOIN airports src ON f.source_airport_code = src.airport_code
+        JOIN airports dest ON f.destination_airport_code = dest.airport_code
+        JOIN aircrafts ac ON f.aircraft_id = ac.aircraft_id
+    </select>
+
+    <update id="updateFlight" parameterType="com.crimsonlogic.arilinemanangmentsystem.model.Flight">
+        UPDATE flights
+        SET 
+            source_airport_code = #{source.airportCode},
+            destination_airport_code = #{destination.airportCode},
+            departure_date_time = #{departureDateTime},
+            arrival_date_time = #{arrivalDateTime},
+            aircraft_id = #{aircraft.aircraftId},
+            base_fare = #{baseFare},
+            status = #{status},
+            booked_a_seats = #{bookedASeats},
+            booked_b_seats = #{bookedBSeats},
+            booked_c_seats = #{bookedCSeats}
+        WHERE flight_id = #{flightId}
+    </update>
+
+    <delete id="deleteFlight">
+        DELETE FROM flights WHERE flight_id = #{flightId}
+    </delete>
+
+    <select id="selectMaxFlightId" resultType="string">
+        SELECT MAX(flight_id) FROM flights
+    </select>
+
+</mapper>
